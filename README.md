@@ -191,11 +191,11 @@ erDiagram
         timestamp updated_at
     }
 
-    books ||--o{ book_issues : "has"
-    students ||--o{ book_issues : "issues"
-    categories ||--o{ books : "categorizes"
-    authors ||--o{ books : "writes"
-    publishers ||--o{ books : "publishes"
+    books ||--o{ book_issues : has
+    students ||--o{ book_issues : issues
+    categories ||--o{ books : categorizes
+    authors ||--o{ books : writes
+    publishers ||--o{ books : publishes
 ```
 
 ---
