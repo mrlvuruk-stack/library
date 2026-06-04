@@ -212,10 +212,10 @@ graph TD
     App[Laravel App Container]
     MySQL[(MySQL Database)]
 
-    Client <-->|HTTPS / SSL (User Domain)| CF
-    CF <-->|Proxied Traffic / SSL (*.up.railway.app)| RLB
-    RLB <--> App
-    App <--> MySQL
+    Client -->|HTTPS / SSL (User Domain)| CF
+    CF -->|Proxied Traffic / SSL (*.up.railway.app)| RLB
+    RLB --> App
+    App --> MySQL
 ```
 
 ---
