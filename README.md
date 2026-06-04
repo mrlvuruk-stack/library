@@ -109,24 +109,114 @@ For step-by-step setup guides, refer to:
 
 ---
 
-## ScreenShots
+## Database Schema (ERD)
 
-Here is a preview of the system UI:
+Below is the entity-relationship diagram representing the database design of the Library Management System:
 
-<table width="100%">
-  <tr>
-    <td width="50%"><p align="center"><b>Dashboard Stats</b></p><img src="Screenshots/lms (1).png" width="100%"/></td>
-    <td width="50%"><p align="center"><b>Books Catalog</b></p><img src="Screenshots/lms (2).png" width="100%"/></td>
-  </tr>
-  <tr>
-    <td width="50%"><p align="center"><b>Category List</b></p><img src="Screenshots/lms (3).png" width="100%"/></td>
-    <td width="50%"><p align="center"><b>Author Directory</b></p><img src="Screenshots/lms (4).png" width="100%"/></td>
-  </tr>
-  <tr>
-    <td width="50%"><p align="center"><b>Issue Book Flow</b></p><img src="Screenshots/lms (6).png" width="100%"/></td>
-    <td width="50%"><p align="center"><b>Student Management</b></p><img src="Screenshots/lms (9).png" width="100%"/></td>
-  </tr>
-</table>
+```mermaid
+erDiagram
+    users {
+        bigint id PK
+        string name
+        string username
+        string email
+        string password
+        string avatar
+        timestamp created_at
+        timestamp updated_at
+    }
+    students {
+        bigint id PK
+        string name
+        string age
+        string gender
+        string email
+        string phone
+        string address
+        string class
+        string branch
+        string photo
+        string category
+        timestamp created_at
+        timestamp updated_at
+    }
+    authors {
+        bigint id PK
+        string name
+        timestamp created_at
+        timestamp updated_at
+    }
+    publishers {
+        bigint id PK
+        string name
+        timestamp created_at
+        timestamp updated_at
+    }
+    categories {
+        bigint id PK
+        string name
+        timestamp created_at
+        timestamp updated_at
+    }
+    books {
+        bigint id PK
+        string name
+        bigint category_id FK
+        bigint author_id FK
+        bigint publisher_id FK
+        string status
+        integer quantity
+        string type
+        timestamp created_at
+        timestamp updated_at
+    }
+    book_issues {
+        bigint id PK
+        bigint student_id FK
+        bigint book_id FK
+        timestamp issue_date
+        timestamp return_date
+        string issue_status
+        timestamp return_day
+        timestamp created_at
+        timestamp updated_at
+    }
+    settings {
+        bigint id PK
+        string library_name
+        string logo
+        string address
+        string email
+        timestamp created_at
+        timestamp updated_at
+    }
+
+    books ||--o{ book_issues : "has"
+    students ||--o{ book_issues : "issues"
+    categories ||--o{ books : "categorizes"
+    authors ||--o{ books : "writes"
+    publishers ||--o{ books : "publishes"
+```
+
+---
+
+## Deployment & System Architecture
+
+Here is the operational architecture diagram showing the data flow from clients through Cloudflare and Railway to the Laravel application container and MySQL:
+
+```mermaid
+graph TD
+    Client[Browser / User]
+    CF[Cloudflare CDN / WAF / DNS]
+    RLB[Railway Load Balancer]
+    App[Laravel App Container]
+    MySQL[(MySQL Database)]
+
+    Client <-->|HTTPS / SSL (User Domain)| CF
+    CF <-->|Proxied Traffic / SSL (*.up.railway.app)| RLB
+    RLB <--> App
+    App <--> MySQL
+```
 
 ---
 
