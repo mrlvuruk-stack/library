@@ -115,87 +115,87 @@ Below is the entity-relationship diagram representing the database design of the
 
 ```mermaid
 erDiagram
-    users {
-        bigint id PK
-        string name
-        string username
-        string email
-        string password
-        string avatar
-        timestamp created_at
-        timestamp updated_at
+    User {
+        int id PK
+        varchar name
+        varchar username
+        varchar email
+        varchar password
+        varchar avatar
+        datetime created_at
+        datetime updated_at
     }
-    students {
-        bigint id PK
-        string name
-        string age
-        string gender
-        string email
-        string phone
-        string address
-        string class
-        string branch
-        string photo
-        string category
-        timestamp created_at
-        timestamp updated_at
+    Student {
+        int id PK
+        varchar name
+        varchar age
+        varchar gender
+        varchar email
+        varchar phone
+        varchar address
+        varchar class
+        varchar branch
+        varchar photo
+        varchar category
+        datetime created_at
+        datetime updated_at
     }
-    authors {
-        bigint id PK
-        string name
-        timestamp created_at
-        timestamp updated_at
+    Author {
+        int id PK
+        varchar name
+        datetime created_at
+        datetime updated_at
     }
-    publishers {
-        bigint id PK
-        string name
-        timestamp created_at
-        timestamp updated_at
+    Publisher {
+        int id PK
+        varchar name
+        datetime created_at
+        datetime updated_at
     }
-    categories {
-        bigint id PK
-        string name
-        timestamp created_at
-        timestamp updated_at
+    Category {
+        int id PK
+        varchar name
+        datetime created_at
+        datetime updated_at
     }
-    books {
-        bigint id PK
-        string name
-        bigint category_id FK
-        bigint author_id FK
-        bigint publisher_id FK
-        string status
-        integer quantity
-        string type
-        timestamp created_at
-        timestamp updated_at
+    Book {
+        int id PK
+        varchar name
+        int category_id FK
+        int author_id FK
+        int publisher_id FK
+        varchar status
+        int quantity
+        varchar type
+        datetime created_at
+        datetime updated_at
     }
-    book_issues {
-        bigint id PK
-        bigint student_id FK
-        bigint book_id FK
-        timestamp issue_date
-        timestamp return_date
-        string issue_status
-        timestamp return_day
-        timestamp created_at
-        timestamp updated_at
+    BookIssue {
+        int id PK
+        int student_id FK
+        int book_id FK
+        datetime issue_date
+        datetime return_date
+        varchar issue_status
+        datetime return_day
+        datetime created_at
+        datetime updated_at
     }
-    settings {
-        bigint id PK
-        string library_name
-        string logo
-        string address
-        string email
-        timestamp created_at
-        timestamp updated_at
+    Setting {
+        int id PK
+        varchar library_name
+        varchar logo
+        varchar address
+        varchar email
+        datetime created_at
+        datetime updated_at
     }
 
-    books ||--o{ book_issues : has
-    students ||--o{ book_issues : issues
-    categories ||--o{ books : categorizes
-    authors ||--o{ books : writes
-    publishers ||--o{ books : publishes
+    Book ||--o{ BookIssue : "has"
+    Student ||--o{ BookIssue : "issues"
+    Category ||--o{ Book : "categorizes"
+    Author ||--o{ Book : "writes"
+    Publisher ||--o{ Book : "publishes"
 ```
 
 ---
@@ -206,14 +206,14 @@ Here is the operational architecture diagram showing the data flow from clients 
 
 ```mermaid
 graph TD
-    Client[Browser / User]
-    CF[Cloudflare CDN / WAF / DNS]
-    RLB[Railway Load Balancer]
-    App[Laravel App Container]
-    MySQL[(MySQL Database)]
+    Client["Browser / User"]
+    CF["Cloudflare CDN / WAF / DNS"]
+    RLB["Railway Load Balancer"]
+    App["Laravel App Container"]
+    MySQL["MySQL Database"]
 
-    Client -->|HTTPS / SSL - User Domain| CF
-    CF -->|Proxied Traffic / SSL - star.up.railway.app| RLB
+    Client -->|"HTTPS / SSL - User Domain"| CF
+    CF -->|"Proxied Traffic / SSL - star.up.railway.app"| RLB
     RLB --> App
     App --> MySQL
 ```
